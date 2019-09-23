@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
+import wrapper from '../helpers/response';
 
 const User = db.User;
 
@@ -8,7 +9,7 @@ const User = db.User;
  */
 function load(req, res, next, id) {
     User.findById(id)
-        .then((user) => {
+        .then(user => {
             if (!user) {
                 const e = new Error('User does not exist');
                 e.status = httpStatus.NOT_FOUND;
@@ -36,7 +37,7 @@ function get(req, res) {
  */
 function create(req, res, next) {
     const user = User.build({
-        username: req.body.username,
+        username: req.body.username
     });
 
     user.save()
@@ -62,14 +63,19 @@ function update(req, res, next) {
 
 /**
  * Get user list.
- * @property {number} req.query.skip - Number of users to be skipped.
- * @property {number} req.query.limit - Limit number of users to be returned.
- * @returns {User[]}
  */
 function list(req, res, next) {
-    const { limit = 50 } = req.query;
-    User.findAll({ limit })
-        .then(users => res.json(users))
+    const { page = 1 } = req.query;
+
+    const options = {
+        attributes: ['id', 'username'],
+        paginate: 1,
+        page,
+        order: [['id', 'ASC']]
+    };
+
+    User.paginate(options)
+        .then(users => res.json(wrapper(users)))
         .catch(e => next(e));
 }
 

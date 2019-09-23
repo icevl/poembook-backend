@@ -82,6 +82,7 @@
         "pg-hstore": "2.3.2",
         "run-sequence": "^1.1.5",
         "sequelize": "4.38.0",
+        "sequelize-paginate": "false1.1.6",
         "supertest": "2.0.1",
         "supertest-as-promised": "4.0.2",
         "winston": "2.3.0"

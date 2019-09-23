@@ -1,3 +1,5 @@
+import sequelizePaginate from 'sequelize-paginate';
+
 /**
  * User Schema
  */
@@ -23,10 +25,12 @@ module.exports = (sequelize, DataTypes) => {
         updatedAt: {
             type: DataTypes.DATE,
             field: 'updated_at'
-        },
+        }
 
         //timestamps: false
     });
+
+    sequelizePaginate.paginate(User);
 
     return User;
 };
