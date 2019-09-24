@@ -13,6 +13,7 @@
     "scripts": {
         "start": "gulp serve",
         "start:debug": "cross-env DEBUG=amida-api-boilerplate:* yarn start",
+        "seed": "node dist/seeder/index.js",
         "build": "gulp",
         "copy": "gulp copy",
         "babel": "gulp babel",
