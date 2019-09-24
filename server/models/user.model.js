@@ -26,8 +26,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             field: 'updated_at'
         }
-
-        //timestamps: false
     });
 
     sequelizePaginate.paginate(User);

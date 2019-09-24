@@ -19,7 +19,7 @@
         "lint": "esw *.js server config --color",
         "lint:watch": "yarn lint -- --watch",
         "beautify": "es-beautifier -u -c .eslintrc.js *.js server config",
-        "precommit": "yarn lint && yarn test",
+        "precommit": "yarn lint",
         "test": "cross-env NODE_ENV=test ./node_modules/.bin/jest server/tests",
         "test:watch": "jest --watch",
         "test:coverage": "cross-env NODE_ENV=test ./node_modules/.bin/istanbul cover _jest -- --ui bdd --reporter spec --colors --compilers js:babel-core/register server/tests --recursive",
@@ -36,8 +36,7 @@
         "jest",
         "istanbul",
         "REST",
-        "API",
-        "boilerplate"
+        "API"
     ],
     "jest": {
         "automock": false,
@@ -69,6 +68,7 @@
         "express-jwt": "5.1.0",
         "express-validation": "1.0.1",
         "express-winston": "2.1.2",
+        "faker": "false4.1.0",
         "gulp": "3.9.1",
         "gulp-load-plugins": "^1.2.0",
         "helmet": "3.1.0",
@@ -80,6 +80,7 @@
         "morgan": "1.7.0",
         "pg": "7.4.3",
         "pg-hstore": "2.3.2",
+        "request": "2.88.0",
         "run-sequence": "^1.1.5",
         "sequelize": "4.38.0",
         "sequelize-paginate": "false1.1.6",
@@ -92,6 +93,7 @@
         "babel-core": "6.18.0",
         "babel-plugin-add-module-exports": "0.2.1",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
+        "babel-plugin-transform-runtime": "false6.23.0",
         "babel-preset-es2015": "6.16.0",
         "babel-preset-stage-2": "6.18.0",
         "commitizen": "^2.9.2",
@@ -110,6 +112,7 @@
         "istanbul": "1.1.0-alpha.1",
         "jest": "23.4.2",
         "jsdom": "11.12.0",
+        "reqest": "false0.0.1-security",
         "validate-commit-msg": "^2.6.1"
     },
     "babel": {
@@ -119,7 +122,13 @@
         ],
         "plugins": [
             "add-module-exports",
-            "transform-object-rest-spread"
+            "transform-object-rest-spread",
+            [
+                "transform-runtime",
+                {
+                    "regenerator": true
+                }
+            ]
         ],
         "ignore": [
             "build/yarn/**/*.js",

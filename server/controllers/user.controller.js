@@ -69,7 +69,7 @@ function list(req, res, next) {
 
     const options = {
         attributes: ['id', 'username'],
-        paginate: 1,
+        paginate: 3,
         page,
         order: [['id', 'ASC']]
     };

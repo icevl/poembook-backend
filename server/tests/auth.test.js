@@ -11,35 +11,35 @@ const apiVersionPath = `/api/v${config.apiVersion}`;
 describe('## Auth APIs', () => {
     const validUserCredentials = {
         username: 'react',
-        password: 'express',
+        password: 'express'
     };
 
     const invalidUserCredentials = {
         username: 'react',
-        password: 'IDontKnow',
+        password: 'IDontKnow'
     };
 
     let jwtToken;
 
     describe(`# POST ${apiVersionPath}/auth/login`, () => {
-        test('should return Authentication error', (done) => {
+        test('should return Authentication error', done => {
             request(app)
                 .post(`${apiVersionPath}/auth/login`)
                 .send(invalidUserCredentials)
                 .expect(httpStatus.UNAUTHORIZED)
-                .then((res) => {
+                .then(res => {
                     expect(res.body.message).toEqual('Authentication error');
                     done();
                 })
                 .catch(done);
         });
 
-        test('should get valid JWT token', (done) => {
+        test('should get valid JWT token', done => {
             request(app)
                 .post(`${apiVersionPath}/auth/login`)
                 .send(validUserCredentials)
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(res.body).toHaveProperty('token');
                     jwt.verify(res.body.token, config.jwtSecret, (err, decoded) => {
                         expect(!err);
@@ -53,35 +53,35 @@ describe('## Auth APIs', () => {
     });
 
     describe(`# GET ${apiVersionPath}/auth/random-number`, () => {
-        test('should fail to get random number because of missing Authorization', (done) => {
+        test('should fail to get random number because of missing Authorization', done => {
             request(app)
                 .get(`${apiVersionPath}/auth/random-number`)
                 .expect(httpStatus.UNAUTHORIZED)
-                .then((res) => {
+                .then(res => {
                     expect(res.body.message).toEqual('Unauthorized');
                     done();
                 })
                 .catch(done);
         });
 
-        test('should fail to get random number because of wrong token', (done) => {
+        test('should fail to get random number because of wrong token', done => {
             request(app)
                 .get(`${apiVersionPath}/auth/random-number`)
                 .set('Authorization', 'Bearer inValidToken')
                 .expect(httpStatus.UNAUTHORIZED)
-                .then((res) => {
+                .then(res => {
                     expect(res.body.message).toEqual('Unauthorized');
                     done();
                 })
                 .catch(done);
         });
 
-        test('should get a random number', (done) => {
+        test('should get a random number', done => {
             request(app)
                 .get(`${apiVersionPath}/auth/random-number`)
                 .set('Authorization', jwtToken)
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(typeof res.body.num === 'number');
                     done();
                 })

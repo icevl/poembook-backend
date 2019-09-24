@@ -38,12 +38,14 @@ app.use(cors());
 if (config.env === 'development') {
     expressWinston.requestWhitelist.push('body');
     expressWinston.responseWhitelist.push('body');
-    app.use(expressWinston.logger({
-        winstonInstance,
-        meta: true, // optional: log meta data about request (defaults to true)
-        msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-        colorStatus: true, // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
-    }));
+    app.use(
+        expressWinston.logger({
+            winstonInstance,
+            meta: true, // optional: log meta data about request (defaults to true)
+            msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+            colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+        })
+    );
 }
 
 // Get API Version from .env (or else assume 1.0)
@@ -74,16 +76,23 @@ app.use((req, res, next) => {
 
 // log error in winston transports except when executing test suite
 if (config.env !== 'test') {
-    app.use(expressWinston.errorLogger({
-        winstonInstance,
-    }));
+    app.use(
+        expressWinston.errorLogger({
+            winstonInstance
+        })
+    );
 }
 
 // error handler, send stacktrace only during development
-app.use((err, req, res, next) => // eslint-disable-line no-unused-vars
+app.use((
+    err,
+    req,
+    res,
+    next // eslint-disable-line no-unused-vars
+) =>
     res.status(err.status).json({
         message: err.isPublic ? err.message : httpStatus[err.status],
-        stack: config.env === 'development' ? err.stack : {},
+        stack: config.env === 'development' ? err.stack : {}
     })
 );
 

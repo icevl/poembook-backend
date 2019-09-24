@@ -3,7 +3,9 @@ module.exports = {
     plugins: ['import'],
     rules: {
         indent: ['error', 4],
-        'comma-dangle': ['error', 'never']
+        'comma-dangle': ['error', 'never'],
+        'arrow-parens': 0,
+        'max-len': 0
     },
     parserOptions: {
         sourceType: 'module',

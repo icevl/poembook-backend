@@ -21,16 +21,16 @@ afterAll(() => {
 
 describe('## User APIs', () => {
     let user = {
-        username: 'KK123',
+        username: 'KK123'
     };
 
     describe(`# POST ${apiVersionPath}/users`, () => {
-        test('should create a new user', (done) => {
+        test('should create a new user', done => {
             request(app)
                 .post(`${apiVersionPath}/users`)
                 .send(user)
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(res.body.username).toEqual(user.username);
                     user = res.body;
                     done();
@@ -40,22 +40,22 @@ describe('## User APIs', () => {
     });
 
     describe(`# GET ${apiVersionPath}/users/:userId`, () => {
-        test('should get user details', (done) => {
+        test('should get user details', done => {
             request(app)
                 .get(`${apiVersionPath}/users/${user.id}`)
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(res.body.username).toEqual(user.username);
                     done();
                 })
                 .catch(done);
         });
 
-        test('should report error with message - Not found, when user does not exist', (done) => {
+        test('should report error with message - Not found, when user does not exist', done => {
             request(app)
                 .get(`${apiVersionPath}/users/12345`)
                 .expect(httpStatus.NOT_FOUND)
-                .then((res) => {
+                .then(res => {
                     expect(res.body.message).toEqual('Not Found');
                     done();
                 })
@@ -64,13 +64,13 @@ describe('## User APIs', () => {
     });
 
     describe(`# PUT ${apiVersionPath}/users/:userId`, () => {
-        test('should update user details', (done) => {
+        test('should update user details', done => {
             user.username = 'KK';
             request(app)
                 .put(`${apiVersionPath}/users/${user.id}`)
                 .send(user)
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(res.body.username).toEqual('KK');
                     done();
                 })
@@ -79,23 +79,23 @@ describe('## User APIs', () => {
     });
 
     describe(`# GET ${apiVersionPath}/users/`, () => {
-        test('should get all users', (done) => {
+        test('should get all users', done => {
             request(app)
                 .get(`${apiVersionPath}/users`)
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(Array.isArray(res.body));
                     done();
                 })
                 .catch(done);
         });
 
-        test('should get all users (with limit and skip)', (done) => {
+        test('should get all users (with limit and skip)', done => {
             request(app)
                 .get(`${apiVersionPath}/users`)
                 .query({ limit: 10, skip: 1 })
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(Array.isArray(res.body));
                     done();
                 })
@@ -104,11 +104,11 @@ describe('## User APIs', () => {
     });
 
     describe(`# DELETE ${apiVersionPath}/users/`, () => {
-        test('should delete user', (done) => {
+        test('should delete user', done => {
             request(app)
                 .delete(`${apiVersionPath}/users/${user.id}`)
                 .expect(httpStatus.OK)
-                .then((res) => {
+                .then(res => {
                     expect(res.body).toEqual('KK');
                     done();
                 })
