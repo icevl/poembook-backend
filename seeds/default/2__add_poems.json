@@ -1,0 +1,11 @@
+[
+    {
+        "description": "Poems",
+        "repeat": 10,
+        "url": "/api/v1.0/poems",
+        "method": "post",
+        "body": {
+            "content": "{{faker.lorem.text()}}"
+        }
+    }
+]

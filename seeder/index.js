@@ -22,7 +22,7 @@ async function main() {
 
     for (let req of arr) {
         req = klassFaker.compileObject(req);
-        let r = await sender.send(req);
+        let r = await sender.send(req);    
     }
 }
 

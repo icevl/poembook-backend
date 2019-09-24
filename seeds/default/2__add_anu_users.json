@@ -1,9 +1,0 @@
-[
-  {
-    "url": "/api/v1.0/users/",
-    "method": "post",
-    "body": {
-      "username": "{{faker.name.lastName()}}"
-    }
-  }
-]

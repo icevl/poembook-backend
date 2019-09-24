@@ -20,6 +20,23 @@ export default {
         }
     },
 
+    createPoem: {
+        body: {
+            content: Joi.string().required()
+        }
+    },
+
+    updatePoem: {
+        body: {
+            content: Joi.string().required()
+        },
+        params: {
+            poemId: Joi.string()
+                .hex()
+                .required()
+        }
+    },
+
     // POST /api/auth/login
     login: {
         body: {

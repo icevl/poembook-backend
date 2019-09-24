@@ -45,6 +45,11 @@ fs.readdirSync(modelsDir)
         db[model.name] = model;
     });
 
+// Associates
+
+db.Poem.belongsTo(db.User, { foreignKey: 'user_id', as: 'user' });
+db.User.hasMany(db.Poem, { as: 'poem' });
+
 // Synchronizing any model changes with database.
 sequelize
     .sync()

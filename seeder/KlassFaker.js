@@ -5,7 +5,7 @@ export class KlassFaker {
         // https://www.regextester.com/94730
 
         const regexp = new RegExp('{{faker\\..*?\\)}}', 'g');
-        let compiledTemplate = template.replace(regexp, this.replacer.bind(this));
+        const compiledTemplate = template.replace(regexp, this.replacer.bind(this));
         return compiledTemplate;
     }
 
@@ -18,10 +18,12 @@ export class KlassFaker {
     replacer(match, p1, p2, p3, offset, string) {
         let m = match.replace('{{', '');
         m = m.replace('()}}', '');
-        let arr = m.split('.');
+        const arr = m.split('.');
 
         const section = arr[1];
         const method = arr[2];
-        return faker[section][method]();
+        const data = faker[section][method]();
+
+        return data.replace(/(\r\n|\n|\r)/gm, '');
     }
 }
