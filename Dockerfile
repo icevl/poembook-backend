@@ -28,5 +28,12 @@ COPY --from=builder /app/node_modules ./node_modules
 # expose port 4000
 EXPOSE 4000
 
+## THE LIFE SAVER
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+## Launch the wait tool and then your application
+CMD /wait && node dist/index.js
+
 # cmd to start service
-CMD [ "node", "dist/index.js"]
+#CMD [ "node", "dist/index.js"]

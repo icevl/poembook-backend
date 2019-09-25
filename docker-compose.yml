@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  amida-api:
+  poem-api:
     build:
       context: .
     volumes:
@@ -18,18 +18,17 @@ services:
     ports:
       - "4000:4000"
 
+    depends_on:
+      - "postgres"
+
     # Set environment variables from this file
     env_file:
       - .env
 
     # Overwrite any env var defined in .env file (if required)
     environment:
-      - PG_DB=api
-      - PG_PORT=5432
-      - PG_HOST=postgres
-      - PG_USER=api
-      - PG_PASSWD=boilerplate
-      - DEBUG=amida-api-boilerplate:*
+      - UNIQUE_NAME_PG_HOST=postgres
+      - WAIT_HOSTS=postgres:5432
 
     # Link to containers in another service.
     # Links also express dependency between services in the same way as depends_on,
@@ -40,7 +39,10 @@ services:
   postgres:
     image: "postgres:9.4.11"
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    volumes:
+      - ./DB:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=api
-      - POSTGRES_PASSWORD=boilerplate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=poem

@@ -56,6 +56,7 @@ function update(req, res, next) {
 
 /**
  * Get poem list.
+ *
  */
 function list(req, res, next) {
     const { page = 1 } = req.query;
