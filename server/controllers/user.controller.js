@@ -37,7 +37,8 @@ function get(req, res) {
  */
 function create(req, res, next) {
     const user = User.build({
-        username: req.body.username
+        email: req.body.email,
+        password: req.body.password
     });
 
     user.save()

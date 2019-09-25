@@ -3,7 +3,9 @@
         "url": "/api/v1.0/users",
         "method": "post",
         "body": {
-            "username": "{{faker.name.lastName()}}"
+            "username": "{{faker.name.lastName()}}",
+            "email": "kabanov.mike@gmail.com",
+            "password": "$2y$12$.W7wN.KtB7umdEfXN0QU7eRQ77tBNlqOz//7E0GqaqdbDLvK8vPtm"
         }
     }
 ]

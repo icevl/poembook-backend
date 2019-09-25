@@ -1,7 +1,7 @@
 [
     {
         "description": "Poems",
-        "repeat": 10,
+        "repeat": 0,
         "url": "/api/v1.0/poems",
         "method": "post",
         "body": {

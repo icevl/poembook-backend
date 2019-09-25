@@ -5,6 +5,7 @@ module.exports = {
         indent: ['error', 4],
         'comma-dangle': ['error', 'never'],
         'arrow-parens': 0,
+        'no-param-reassign': 0,
         'max-len': 0
     },
     parserOptions: {

@@ -57,6 +57,7 @@
     },
     "dependencies": {
         "@babel/register": "false7.6.0",
+        "bcrypt": "false3.0.6",
         "bluebird": "3.4.6",
         "body-parser": "1.15.2",
         "compression": "1.6.2",

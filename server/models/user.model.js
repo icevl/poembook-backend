@@ -2,6 +2,7 @@ import sequelizePaginate from 'sequelize-paginate';
 
 /**
  * User Schema
+ *
  */
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
@@ -12,9 +13,17 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         username: {
+            type: DataTypes.STRING
+        },
+
+        email: {
             type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
+            allowNull: false
+        },
+
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
 
         createdAt: {

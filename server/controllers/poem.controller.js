@@ -59,7 +59,6 @@ function update(req, res, next) {
  */
 function list(req, res, next) {
     const { page = 1 } = req.query;
-
     const options = {
         attributes: ['id', 'content', 'created_at'],
         include: [{ model: db.User, as: 'user', attributes: ['id', 'username'] }],
