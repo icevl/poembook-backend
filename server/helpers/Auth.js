@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
+import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import config from '../../config/config';
+import APIError from '../helpers/APIError';
 
 const User = db.User;
 
@@ -21,8 +23,9 @@ function validateToken(req, res, next) {
         };
 
         req.user = user;
-    } catch (err) {
-        throw new Error(err);
+    } catch (error) {
+        const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+        return next(err);
     }
 
     return next();
@@ -41,7 +44,9 @@ async function auth(req, res, next) {
             };
             return next();
         }
-        return next();
+
+        const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+        return next(err);
     }
     return next();
 }

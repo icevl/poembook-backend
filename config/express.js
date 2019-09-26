@@ -84,16 +84,29 @@ if (config.env !== 'test') {
 }
 
 // error handler, send stacktrace only during development
-app.use((
-    err,
-    req,
-    res,
-    next // eslint-disable-line no-unused-vars
-) =>
-    res.status(err.status).json({
-        message: err.isPublic ? err.message : httpStatus[err.status],
-        stack: config.env === 'development' ? err.stack : {}
-    })
-);
+if (config.env === 'development') {
+    app.use((
+        err,
+        req,
+        res,
+        next // eslint-disable-line no-unused-vars
+    ) =>
+        res.status(err.status).json({
+            message: err.isPublic ? err.message : httpStatus[err.status]
+            // stack: err.stack
+        })
+    );
+} else {
+    app.use((
+        err,
+        req,
+        res,
+        next // eslint-disable-line no-unused-vars
+    ) =>
+        res.status(err.status).json({
+            message: err.isPublic ? err.message : httpStatus[err.status]
+        })
+    );
+}
 
 export default app;
