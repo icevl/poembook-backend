@@ -1,7 +1,7 @@
 export class ParamsStorage {
-    params = {};
-
-    constructor() {}
+    constructor() {
+        this.params = {};
+    }
 
     setParam(name, value) {
         this.params[name] = value;

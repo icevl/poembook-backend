@@ -47,31 +47,22 @@ export class Sender {
     }
 
     saveParamsToStorage(req, response) {
-        let paramsToSave = req.response;
-        let data = response.body.data || null;
-
-        // Used to get first element of list
-        // Sometimes we want to get id of item (user for example)
-        // So we can provide filter by email, but API will return list of users containing one user
-        // This is workaround to get first item of array
-        if (Array.isArray(paramsToSave)) {
-            paramsToSave = paramsToSave[0];
-        }
-
-        if (Array.isArray(data)) {
-            data = data[0];
-        }
-
-        console.log('===========');
-        console.log(paramsToSave);
-        console.log('===========');
+        const paramsToSave = req.response;
+        const data = response.body || null;
+        let storedParams = {};
 
         if (paramsToSave && data) {
-            for (let p in paramsToSave) {
-                if (data[p]) {
-                    this.storage.setParam(paramsToSave[p], data[p]);
-                }
-            }
+            storedParams = Object.keys(paramsToSave).reduce(
+                (acc, item) => (item in data ? { ...acc, [item]: data[item] } : acc),
+                {}
+            );
+        }
+
+        if (Object.keys(storedParams).length) {
+            console.log('===========');
+            console.log(storedParams);
+            console.log('===========');
+            Object.keys(storedParams).forEach(item => this.storage.setParam(item, storedParams[item]));
         }
     }
 

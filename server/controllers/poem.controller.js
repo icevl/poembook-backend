@@ -34,9 +34,8 @@ function get(req, res) {
 function create(req, res, next) {
     const poem = Poem.build({
         content: req.body.content,
-        user_id: 1
+        user_id: req.user.id
     });
-
     poem.save()
         .then(savedPoem => res.json(savedPoem))
         .catch(e => next(e));

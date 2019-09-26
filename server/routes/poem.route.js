@@ -2,7 +2,7 @@ import express from 'express';
 import validate from 'express-validation';
 import paramValidation from '../../config/param-validation';
 import poemCtrl from '../controllers/poem.controller';
-import validateToken from '../helpers/Auth';
+import { validateToken, auth } from '../helpers/auth';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -13,7 +13,9 @@ router
     .get(validateToken, poemCtrl.list)
 
     /** POST /api/poems - Create new poem */
-    .post(validate(paramValidation.createPoem), poemCtrl.create);
+    .post([validateToken, auth, validate(paramValidation.createPoem)], poemCtrl.create);
+
+/** .post(validate(paramValidation.createPoem), poemCtrl.create);  */
 
 router
     .route('/:poemId')
