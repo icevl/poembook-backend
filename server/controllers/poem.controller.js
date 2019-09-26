@@ -36,6 +36,7 @@ function create(req, res, next) {
         content: req.body.content,
         user_id: req.user.id
     });
+
     poem.save()
         .then(savedPoem => res.json(savedPoem))
         .catch(e => next(e));

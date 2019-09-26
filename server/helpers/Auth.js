@@ -28,24 +28,20 @@ function validateToken(req, res, next) {
     return next();
 }
 
-function auth(req, res, next) {
+async function auth(req, res, next) {
     if (req.user && req.user.id) {
         const userId = req.user.id;
 
-        User.findOne({
-            where: { id: userId }
-        })
-            .then(user => {
-                req.user = {
-                    id: user.id,
-                    email: user.email
-                };
+        const respose = await User.findOne({ where: { id: userId } });
 
-                next();
-            });
-            // .catch(() => {
-            //     return next();
-            // });
+        if (respose && respose.id) {
+            req.user = {
+                id: respose.id,
+                email: respose.email
+            };
+            return next();
+        }
+        return next();
     }
     return next();
 }
