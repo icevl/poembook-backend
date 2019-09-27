@@ -1,0 +1,86 @@
+[
+    {
+        "description": "Poems comments",
+        "repeat": 4,
+        "url": "/api/comments",
+        "method": "post",
+        "body": {
+            "id": 30,
+            "type": "poem",
+            "content": "{{faker.lorem.text()}}"
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    },
+    {
+        "description": "Poems comments",
+        "repeat": 3,
+        "url": "/api/comments",
+        "method": "post",
+        "body": {
+            "id": 28,
+            "type": "poem",
+            "content": "{{faker.lorem.text()}}"
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    },
+    {
+        "description": "Poems comments",
+        "repeat": 3,
+        "url": "/api/comments",
+        "method": "post",
+        "body": {
+            "id": 25,
+            "type": "poem",
+            "content": "{{faker.lorem.text()}}"
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    },
+    {
+        "description": "Poems comments",
+        "repeat": 4,
+        "url": "/api/comments",
+        "method": "post",
+        "body": {
+            "id": 2,
+            "type": "poem",
+            "content": "{{faker.lorem.text()}}"
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    },
+    {
+        "description": "Poems comments",
+        "repeat": 6,
+        "url": "/api/comments",
+        "method": "post",
+        "body": {
+            "id": 5,
+            "type": "poem",
+            "content": "{{faker.lorem.text()}}"
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    },
+    {
+        "description": "Poems comments",
+        "repeat": 4,
+        "url": "/api/comments",
+        "method": "post",
+        "body": {
+            "id": 8,
+            "type": "poem",
+            "content": "{{faker.lorem.text()}}"
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    }
+]

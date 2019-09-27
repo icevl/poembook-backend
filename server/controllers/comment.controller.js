@@ -33,15 +33,14 @@ function get(req, res) {
  * Create new comment
  */
 function create(req, res, next) {
-    const comment = Comment.build({
+    const comment = {
         content: req.body.content,
         commentable: req.body.type,
         commentable_id: req.body.id,
         user_id: req.user.id
-    });
+    };
 
-    comment
-        .save()
+    Comment.create(comment)
         .then(savedComment => {
             if (req.body.type === 'poem') {
                 // Poem.decrement('comments_count', { where: { id: req.body.id } });

@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import wrapper from '../helpers/response';
+import attributes from '../helpers/attributes';
 
 const Poem = db.Poem;
 
@@ -32,12 +33,12 @@ function get(req, res) {
  * Create new poem
  */
 function create(req, res, next) {
-    const poem = Poem.build({
+    const poem = {
         content: req.body.content,
         user_id: req.user.id
-    });
+    };
 
-    poem.save()
+    Poem.create(poem)
         .then(savedPoem => res.json(savedPoem))
         .catch(e => next(e));
 }
@@ -61,18 +62,18 @@ function update(req, res, next) {
 function list(req, res, next) {
     const { page = 1 } = req.query;
     const options = {
-        attributes: ['id', 'content', 'created_at', 'comments_count'],
+        attributes: attributes.poem,
         include: [
             {
                 model: db.Comment,
                 as: 'comments',
                 limit: 3,
-                attributes: ['id', 'likes_count', 'content', 'created_at'],
-                include: { model: db.User, as: 'suka' }
+                attributes: attributes.comment,
+                include: { model: db.User, as: 'user', attributes: attributes.user }
             },
-            { model: db.User, as: 'user', attributes: ['id', 'email'] }
+            { model: db.User, as: 'user', attributes: attributes.user }
         ],
-        paginate: 20,
+        paginate: 10,
         page,
         order: [['id', 'DESC']]
     };

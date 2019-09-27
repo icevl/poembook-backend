@@ -31,17 +31,14 @@ function get(req, res) {
 
 /**
  * Create new user
- * @property {string} req.body.username - The username of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
- * @returns {User}
  */
 function create(req, res, next) {
-    const user = User.build({
+    const user = {
         email: req.body.email,
         password: req.body.password
-    });
+    };
 
-    user.save()
+    User.create(user)
         .then(savedUser => res.json(savedUser))
         .catch(e => next(e));
 }
