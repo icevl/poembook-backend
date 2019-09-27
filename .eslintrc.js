@@ -6,7 +6,8 @@ module.exports = {
         'comma-dangle': ['error', 'never'],
         'arrow-parens': 0,
         'no-param-reassign': 0,
-        'max-len': 0
+        'max-len': 0,
+        'no-confusing-arrow': 0
     },
     parserOptions: {
         sourceType: 'module',
