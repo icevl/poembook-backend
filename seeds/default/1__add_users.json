@@ -1,6 +1,6 @@
 [
     {
-        "url": "/api/v1.0/users",
+        "url": "/api/users",
         "method": "post",
         "body": {
             "username": "{{faker.name.lastName()}}",
@@ -9,7 +9,7 @@
         }
     },
     {
-        "url": "/api/v1.0/auth/login",
+        "url": "/api/auth/login",
         "method": "post",
         "body": {
             "username": "kabanov.mike@gmail.com",

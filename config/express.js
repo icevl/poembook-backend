@@ -49,7 +49,8 @@ if (config.env === 'development') {
 }
 
 // Get API Version from .env (or else assume 1.0)
-const baseUrl = `/api/v${config.apiVersion}`;
+// const baseUrl = `/api/v${config.apiVersion}`;
+const baseUrl = '/api';
 
 // mount all routes on /api path
 app.use(`${baseUrl}`, routes);
