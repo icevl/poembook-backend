@@ -46,9 +46,26 @@ fs.readdirSync(modelsDir)
     });
 
 // Associates
+// https://sequelize.readthedocs.io/en/v3/docs/associations/
 
 db.Poem.belongsTo(db.User, { foreignKey: 'user_id', as: 'user' });
 db.User.hasMany(db.Poem, { as: 'poem' });
+
+db.Poem.hasMany(db.Comment, {
+    foreignKey: 'commentable_id',
+    constraints: false,
+    scope: {
+        commentable: 'poem'
+    }
+});
+
+db.Comment.belongsTo(db.User, { foreignKey: 'user_id', as: 'user' });
+
+db.Comment.belongsTo(db.Poem, {
+    foreignKey: 'commentable_id',
+    constraints: false,
+    as: 'poem'
+});
 
 // Synchronizing any model changes with database.
 sequelize

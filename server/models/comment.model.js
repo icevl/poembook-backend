@@ -1,16 +1,26 @@
 import sequelizePaginate from 'sequelize-paginate';
 
 module.exports = (sequelize, DataTypes) => {
-    const Poem = sequelize.define('Poem', {
+    const Comment = sequelize.define('Comment', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
 
-        UserId: {
+        commentable: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        commentable_id: {
             type: DataTypes.INTEGER,
-            field: 'user_id'
+            allowNull: false
+        },
+
+        user_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
 
         content: {
@@ -19,11 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         likes_count: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-        },
-
-        comments_count: {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
@@ -39,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    sequelizePaginate.paginate(Poem);
+    sequelizePaginate.paginate(Comment);
 
-    return Poem;
+    return Comment;
 };
