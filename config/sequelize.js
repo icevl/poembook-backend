@@ -45,27 +45,45 @@ fs.readdirSync(modelsDir)
         db[model.name] = model;
     });
 
+Object.keys(db).forEach(item => (typeof db[item].associate === 'function' ? db[item].associate(db) : null));
+
 // Associates
 // https://sequelize.readthedocs.io/en/v3/docs/associations/
 
-db.Poem.belongsTo(db.User, { foreignKey: 'user_id', as: 'user' });
-db.User.hasMany(db.Poem, { as: 'poem' });
+// db.Comment.belongsTo(db.User, { foreignKey: 'user_id', as: 'author' });
+// db.Comment.belongsTo(db.Poem, { foreignKey: 'commentable_id', as: 'poem' });
 
-db.Poem.hasMany(db.Comment, {
-    foreignKey: 'commentable_id',
-    constraints: false,
-    scope: {
-        commentable: 'poem'
-    }
-});
+// db.Poem.hasMany(db.Comment, {
+//     foreignKey: 'commentable_id',
+//     as: 'comments',
+//     onDelete: 'CASCADE',
+//     scope: { commentable: 'poem' }
+// });
 
-db.Comment.belongsTo(db.User, { foreignKey: 'user_id', as: 'user' });
+// db.Poem.belongsTo(db.User, { foreignKey: 'user_id', as: 'user', onDelete: 'CASCADE' });
 
-db.Comment.belongsTo(db.Poem, {
-    foreignKey: 'commentable_id',
-    constraints: false,
-    as: 'poem'
-});
+// db.Poem.belongsTo(db.User, { foreignKey: 'user_id', as: 'user' });
+// db.User.hasMany(db.Poem, { as: 'poem' });
+
+// db.Comment.belongsToMany(db.Poem, { foreignKey: 'commentable_id', as: 'object' });
+// db.Poem.hasMany(db.Comment, { as: 'comments', foreignKey: 'id', targetKey: 'commentable_id' });
+
+// db.Poem.hasMany(db.Comment, {
+//     foreignKey: 'commentable_id',
+//     constraints: false,
+//     scope: {
+//         commentable: 'poem'
+//     },
+//     as: 'comment'
+// });
+
+// db.Comment.belongsTo(db.User, { foreignKey: 'user_id', as: 'user' });
+
+// db.Comment.belongsTo(db.Poem, {
+//     foreignKey: 'commentable_id',
+//     // constraints: false,
+//     as: 'poem'
+// });
 
 // Synchronizing any model changes with database.
 sequelize

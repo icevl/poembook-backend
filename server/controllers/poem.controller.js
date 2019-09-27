@@ -61,8 +61,17 @@ function update(req, res, next) {
 function list(req, res, next) {
     const { page = 1 } = req.query;
     const options = {
-        attributes: ['id', 'content', 'created_at'],
-        include: [{ model: db.User, as: 'user', attributes: ['id', 'username'] }],
+        attributes: ['id', 'content', 'created_at', 'comments_count'],
+        include: [
+            {
+                model: db.Comment,
+                as: 'comments',
+                limit: 3,
+                attributes: ['id', 'likes_count', 'content', 'created_at'],
+                include: { model: db.User, as: 'suka' }
+            },
+            { model: db.User, as: 'user', attributes: ['id', 'email'] }
+        ],
         paginate: 20,
         page,
         order: [['id', 'DESC']]

@@ -84,11 +84,11 @@ function list(req, res, next) {
  * Delete comment
  */
 function remove(req, res, next) {
-    // const poem = req.poem;
-    // const content = req.Comment.content;
-    // Comment.destroy()
-    //     .then(() => res.json(content))
-    //     .catch(e => next(e));
+    const comment = req.comment;
+    comment
+        .destroy()
+        .then(() => res.json({ success: true }))
+        .catch(e => next(e));
 
     next();
 }

@@ -37,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    User.associate = models => {
+        User.hasMany(models.Comment, {
+            foreignKey: 'user_id',
+            as: 'comments',
+            onDelete: 'CASCADE'
+        });
+    };
+
     sequelizePaginate.paginate(User);
 
     return User;
