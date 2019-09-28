@@ -1,0 +1,25 @@
+[
+    {
+        "url": "/api/auth/login",
+        "method": "post",
+        "body": {
+            "username": "kabanov.mike@gmail.com",
+            "password": "$2y$12$.W7wN.KtB7umdEfXN0QU7eRQ77tBNlqOz//7E0GqaqdbDLvK8vPtm"
+        },
+        "response": {
+            "token": "token"
+        }
+    },
+    {
+        "description": "Poems",
+        "repeat": 30,
+        "url": "/api/poems",
+        "method": "post",
+        "body": {
+            "content": "{{faker.lorem.text()}}"
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    }
+]

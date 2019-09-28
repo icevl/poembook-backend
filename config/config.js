@@ -60,7 +60,8 @@ const config = {
         passwd: envVars.UNIQUE_NAME_PG_PASSWD,
         ssl: envVars.UNIQUE_NAME_PG_SSL,
         ssl_ca_cert: envVars.UNIQUE_NAME_PG_CERT_CA
-    }
+    },
+    paginatorSize: 20
 };
 
 export default config;

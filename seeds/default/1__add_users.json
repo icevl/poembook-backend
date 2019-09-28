@@ -9,14 +9,12 @@
         }
     },
     {
-        "url": "/api/auth/login",
+        "url": "/api/users",
         "method": "post",
         "body": {
-            "username": "kabanov.mike@gmail.com",
+            "username": "{{faker.name.lastName()}}",
+            "email": "icevl@mail.ru",
             "password": "$2y$12$.W7wN.KtB7umdEfXN0QU7eRQ77tBNlqOz//7E0GqaqdbDLvK8vPtm"
-        },
-        "response": {
-            "token": "token"
         }
     }
 ]

@@ -1,11 +1,9 @@
 [
     {
-        "description": "Poems",
-        "repeat": 30,
-        "url": "/api/poems",
+        "url": "/api/subscriptions",
         "method": "post",
         "body": {
-            "content": "{{faker.lorem.text()}}"
+            "user_id": 2
         },
         "headers": {
             "authorization": "Bearer {{token}}"

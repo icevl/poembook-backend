@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import wrapper from '../helpers/response';
 import attributes from '../helpers/attributes';
+import config from '../../config/config';
 
 const Poem = db.Poem;
 
@@ -73,9 +74,10 @@ function list(req, res, next) {
             },
             { model: db.User, as: 'user', attributes: attributes.user }
         ],
-        paginate: 10,
+        paginate: config.paginatorSize,
         page,
-        order: [['id', 'DESC']]
+        order: [['id', 'DESC']],
+        where: { user_id: req.user.id }
     };
 
     Poem.paginate(options)
