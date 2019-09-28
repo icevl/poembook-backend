@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
-import wrapper from '../helpers/response';
+import { findWithPaginate } from '../helpers/db';
 
 const User = db.User;
 
@@ -72,8 +72,8 @@ function list(req, res, next) {
         order: [['id', 'ASC']]
     };
 
-    User.paginate(options)
-        .then(users => res.json(wrapper(users)))
+    findWithPaginate(User, options)
+        .then(users => res.json(users))
         .catch(e => next(e));
 }
 

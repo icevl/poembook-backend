@@ -1,19 +1,19 @@
 import Sequelize from 'sequelize';
 import db from '../../config/sequelize';
-import wrapper from '../helpers/response';
 import attributes from '../helpers/attributes';
 import config from '../../config/config';
+import { findWithPaginate } from '../helpers/db';
 
 const Poem = db.Poem;
 const Subscription = db.Subscription;
 const Op = Sequelize.Op;
 
 async function getSubscriptions(userId) {
-    const response = await Subscription.findAll({
-        raw: true,
+    const response = await Subscription.cache('subscriptions').findAll({
         where: { subscriber_id: userId },
         attributes: ['user_id']
     });
+
     return response.map(item => item.user_id);
 }
 
@@ -45,8 +45,8 @@ async function list(req, res, next) {
         }
     };
 
-    Poem.paginate(options)
-        .then(poems => res.json(wrapper(poems)))
+    findWithPaginate(Poem, options)
+        .then(poems => res.json(poems))
         .catch(e => next(e));
 }
 

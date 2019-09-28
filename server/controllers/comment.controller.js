@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
-import wrapper from '../helpers/response';
+import { findWithPaginate } from '../helpers/db';
 import attributes from '../helpers/attributes';
 
 const Comment = db.Comment;
@@ -75,8 +75,8 @@ function list(req, res, next) {
         where: { commentable_id: id, commentable: type }
     };
 
-    Comment.paginate(options)
-        .then(comments => res.json(wrapper(comments)))
+    findWithPaginate(Comment, options)
+        .then(comments => res.json(comments))
         .catch(e => next(e));
 }
 

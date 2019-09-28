@@ -1,5 +1,5 @@
 import db from '../../config/sequelize';
-import wrapper from '../helpers/response';
+import { findWithPaginate } from '../helpers/db';
 
 const Subscription = db.Subscription;
 
@@ -37,8 +37,8 @@ function list(req, res, next) {
         order: [['id', 'ASC']]
     };
 
-    Subscription.paginate(options)
-        .then(users => res.json(wrapper(users)))
+    findWithPaginate(Subscription, options)
+        .then(users => res.json(users))
         .catch(e => next(e));
 }
 

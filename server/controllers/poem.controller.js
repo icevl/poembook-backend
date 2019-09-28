@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
-import wrapper from '../helpers/response';
 import attributes from '../helpers/attributes';
 import config from '../../config/config';
+import { findWithPaginate } from '../helpers/db';
 
 const Poem = db.Poem;
 
@@ -80,8 +80,8 @@ function list(req, res, next) {
         where: { user_id: req.user.id }
     };
 
-    Poem.paginate(options)
-        .then(poems => res.json(wrapper(poems)))
+    findWithPaginate(Poem, options)
+        .then(poems => res.json(poems))
         .catch(e => next(e));
 }
 

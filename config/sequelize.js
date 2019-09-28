@@ -2,9 +2,19 @@ import Sequelize from 'sequelize';
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
+import Redis from 'ioredis';
+import RedisAdaptor from 'sequelize-transparent-cache-ioredis';
+import sequelizeCache from 'sequelize-transparent-cache';
 import config from './config';
 
 const db = {};
+const redis = new Redis();
+const redisAdaptor = new RedisAdaptor({
+    client: redis,
+    namespace: 'model',
+    lifetime: 60
+});
+const { withCache } = sequelizeCache(redisAdaptor);
 
 // connect to postgres testDb
 const sequelizeOptions = {
@@ -40,7 +50,7 @@ fs.readdirSync(modelsDir)
     // import model files and save model names
     .forEach(file => {
         console.log(`Loading model file ${file}`); // eslint-disable-line no-console
-        const model = sequelize.import(path.join(modelsDir, file));
+        const model = withCache(sequelize.import(path.join(modelsDir, file)));
         db[model.name] = model;
     });
 

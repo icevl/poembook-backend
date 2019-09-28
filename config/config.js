@@ -61,7 +61,7 @@ const config = {
         ssl: envVars.UNIQUE_NAME_PG_SSL,
         ssl_ca_cert: envVars.UNIQUE_NAME_PG_CERT_CA
     },
-    paginatorSize: 20
+    paginatorSize: 10
 };
 
 export default config;
