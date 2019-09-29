@@ -18,9 +18,14 @@ async function getSubscriptions(userId) {
 }
 
 async function list(req, res, next) {
-    const subscriptions = await getSubscriptions(req.user.id);
+    let userId = 0;
 
-    subscriptions.push(req.user.id); // me
+    if (req.user) {
+        userId = req.user.id;
+    }
+
+    const subscriptions = await getSubscriptions(userId);
+    subscriptions.push(userId); // me
 
     const { page = 1 } = req.query;
     const options = {
