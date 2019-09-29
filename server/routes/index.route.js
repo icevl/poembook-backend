@@ -5,6 +5,7 @@ import subscriptionRoutes from './subscription.route';
 import feedRoutes from './feed.route';
 import commentRoutes from './comment.route';
 import authRoutes from './auth.route';
+import uploadRoutes from './upload.route';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -22,6 +23,9 @@ router.use('/subscriptions', subscriptionRoutes);
 
 // mount feed routes at /feed
 router.use('/feed', feedRoutes);
+
+// mount upload routes at /uploads
+router.use('/uploads', uploadRoutes);
 
 // mount poem routes at /comments
 router.use('/comments', commentRoutes);

@@ -9,6 +9,7 @@ import httpStatus from 'http-status';
 import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
 import helmet from 'helmet';
+import fileUpload from 'express-fileupload';
 import winstonInstance from './winston';
 import routes from '../server/routes/index.route';
 import config from './config';
@@ -21,12 +22,18 @@ if (config.env === 'development') {
 }
 
 // parse body params and attache them to req.body
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 }));
 
 app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());
+
+app.use(
+    fileUpload({
+        limits: { fileSize: 50 * 1024 * 1024 }
+    })
+);
 
 // secure apps by setting various HTTP headers
 app.use(helmet());
