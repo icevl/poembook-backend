@@ -9,7 +9,8 @@ const Subscription = db.Subscription;
 const Op = Sequelize.Op;
 
 async function getSubscriptions(userId) {
-    const response = await Subscription.cache('subscriptions').findAll({
+    // const response = await Subscription.cache('subscriptions').findAll({
+    const response = await Subscription.findAll({
         where: { subscriber_id: userId },
         attributes: ['user_id']
     });

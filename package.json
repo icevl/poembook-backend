@@ -86,7 +86,7 @@
         "pg-hstore": "2.3.3",
         "request": "2.88.0",
         "run-sequence": "^1.1.5",
-        "sequelize": "5.1.0",
+        "sequelize": "false7.0.0-next.1",
         "sequelize-paginate": "false1.1.5",
         "sequelize-transparent-cache": "false2.0.3",
         "sequelize-transparent-cache-ioredis": "false2.0.2",

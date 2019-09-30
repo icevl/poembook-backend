@@ -7,7 +7,10 @@ module.exports = {
         'arrow-parens': 0,
         'no-param-reassign': 0,
         'max-len': 0,
-        'no-confusing-arrow': 0
+        'no-confusing-arrow': 0,
+        'object-shorthand': 0,
+        'func-names': 0,
+        'space-before-function-paren': 0
     },
     parserOptions: {
         sourceType: 'module',

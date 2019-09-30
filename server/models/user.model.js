@@ -1,5 +1,3 @@
-import sequelizePaginate from 'sequelize-paginate';
-
 /**
  * User Schema
  *
@@ -12,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
 
-        username: {
+        name: {
             type: DataTypes.STRING
         },
 
@@ -24,6 +22,17 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+
+        avatar: {
+            type: DataTypes.STRING
+        },
+
+        avatar_meta: {
+            type: DataTypes.VIRTUAL,
+            get: function() {
+                return `http://suka.ru/${this.getDataValue('avatar')}`;
+            }
         },
 
         createdAt: {
@@ -44,8 +53,6 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE'
         });
     };
-
-    sequelizePaginate.paginate(User);
 
     return User;
 };

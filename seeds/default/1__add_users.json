@@ -3,7 +3,7 @@
         "url": "/api/users",
         "method": "post",
         "body": {
-            "username": "{{faker.name.lastName()}}",
+            "name": "Mikhail Kabanov",
             "email": "kabanov.mike@gmail.com",
             "password": "$2y$12$.W7wN.KtB7umdEfXN0QU7eRQ77tBNlqOz//7E0GqaqdbDLvK8vPtm"
         }
@@ -12,7 +12,7 @@
         "url": "/api/users",
         "method": "post",
         "body": {
-            "username": "{{faker.name.lastName()}}",
+            "name": "{{faker.name.lastName()}}",
             "email": "icevl@mail.ru",
             "password": "$2y$12$.W7wN.KtB7umdEfXN0QU7eRQ77tBNlqOz//7E0GqaqdbDLvK8vPtm"
         }
