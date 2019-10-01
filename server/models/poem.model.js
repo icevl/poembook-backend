@@ -48,10 +48,9 @@ module.exports = (sequelize, DataTypes) => {
         Poem.hasMany(models.Comment, {
             foreignKey: 'commentable_id',
             as: 'comments',
-            onDelete: 'CASCADE',
             scope: { commentable: 'poem' }
         });
-        Poem.belongsTo(models.User, { foreignKey: 'user_id', as: 'user', onDelete: 'CASCADE' });
+        Poem.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     };
 
     sequelizePaginate.paginate(Poem);

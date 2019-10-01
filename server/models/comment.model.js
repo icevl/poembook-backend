@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Comment.associate = models => {
         Comment.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-        Comment.belongsTo(models.Poem, { foreignKey: 'commentable_id', as: 'poem' });
+        Comment.belongsTo(models.Poem, { foreignKey: 'commentable_id', as: 'poem', onDelete: 'cascade' });
     };
 
     sequelizePaginate.paginate(Comment);

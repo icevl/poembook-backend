@@ -2,6 +2,7 @@ import db from '../../config/sequelize';
 import { findWithPaginate } from '../helpers/db';
 
 const Subscription = db.Subscription;
+const User = db.User;
 
 /**
  * Get subscription
@@ -20,7 +21,13 @@ function create(req, res, next) {
     };
 
     Subscription.create(subscription)
-        .then(savedSubscription => res.json(savedSubscription))
+        .then(savedSubscription => {
+            if (savedSubscription.id) {
+                User.increment('subscriptions_count', { where: { id: subscription.subscriber_id } });
+                User.increment('subscribers_count', { where: { id: subscription.user_id } });
+            }
+            return res.json(savedSubscription);
+        })
         .catch(e => next(e));
 }
 

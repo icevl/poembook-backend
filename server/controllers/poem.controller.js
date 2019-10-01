@@ -5,12 +5,13 @@ import config from '../../config/config';
 import { findWithPaginate } from '../helpers/db';
 
 const Poem = db.Poem;
+const User = db.User;
 
 /**
  * Load poem and append to req.
  */
 function load(req, res, next, id) {
-    Poem.findById(id)
+    Poem.findOne({ where: { id } })
         .then(poem => {
             if (!poem) {
                 const e = new Error('Poem does not exist');
@@ -40,7 +41,12 @@ function create(req, res, next) {
     };
 
     Poem.create(poem)
-        .then(savedPoem => res.json(savedPoem))
+        .then(savedPoem => {
+            if (savedPoem.id) {
+                User.increment('poems_count', { where: { id: poem.user_id } });
+            }
+            return res.json(savedPoem);
+        })
         .catch(e => next(e));
 }
 
@@ -90,10 +96,22 @@ function list(req, res, next) {
  */
 function remove(req, res, next) {
     const poem = req.poem;
-    const content = req.poem.content;
+    const id = req.poem.id;
+
+    if (req.user && req.user.id !== poem.user_id) {
+        const e = new Error('Restricted');
+        e.status = httpStatus.FORBIDDEN;
+        return next(e);
+    }
+
     poem.destroy()
-        .then(() => res.json(content))
+        .then(() => {
+            User.decrement('poems_count', { where: { id: poem.user_id } });
+            return res.json({ id, success: true });
+        })
         .catch(e => next(e));
+
+    return true;
 }
 
 export default { load, get, create, update, list, remove };

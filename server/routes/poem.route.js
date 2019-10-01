@@ -27,7 +27,7 @@ router
     .put(validate(paramValidation.updatePoem), poemCtrl.update)
 
     /** DELETE /api/poems/:poemId - Delete poem */
-    .delete(poemCtrl.remove);
+    .delete([validateToken, auth], poemCtrl.remove);
 
 /** Load poem when API with poemId route parameter is hit */
 router.param('poemId', poemCtrl.load);

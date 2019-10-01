@@ -35,6 +35,21 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
+        poems_count: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+
+        subscriptions_count: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+
+        subscribers_count: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+
         createdAt: {
             type: DataTypes.DATE,
             field: 'created_at'
