@@ -1,5 +1,7 @@
+import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import { findWithPaginate } from '../helpers/db';
+import { checkUser } from '../helpers/auth';
 
 const Subscription = db.Subscription;
 const User = db.User;
@@ -14,11 +16,18 @@ function get(req, res) {
 /**
  * Create new subscription
  */
-function create(req, res, next) {
+async function create(req, res, next) {
     const subscription = {
         subscriber_id: req.user.id,
         user_id: req.body.user_id
     };
+
+    const response = await Subscription.findOne(subscription);
+    if (response && response.id) {
+        const e = new Error('Subscription exists');
+        e.status = httpStatus.NOT_FOUND;
+        return next(e);
+    }
 
     Subscription.create(subscription)
         .then(savedSubscription => {
@@ -29,6 +38,8 @@ function create(req, res, next) {
             return res.json(savedSubscription);
         })
         .catch(e => next(e));
+
+    return true;
 }
 
 /**
@@ -50,15 +61,30 @@ function list(req, res, next) {
 }
 
 /**
- * Delete Subscription.
+ * Unsubscribe
  */
-function remove(req, res, next) {
-    // const user = req.user;
-    // const username = req.Subscription.username;
-    // Subscription.destroy()
-    //     .then(() => res.json(username))
-    //     .catch(e => next(e));
-    next();
+async function remove(req, res, next) {
+    checkUser(req, res, next);
+    const userId = req.params.userId;
+    const response = await Subscription.findOne({ where: { user_id: userId, subscriber_id: req.user.id } });
+
+    if (!response) {
+        return res.status(404).json({ error: 'No subscription found' });
+    }
+
+    Subscription.destroy({
+        where: {
+            id: response.id
+        }
+    })
+        .then(() => {
+            User.decrement('subscriptions_count', { where: { id: req.user.id } });
+            User.decrement('subscribers_count', { where: { id: userId } });
+            return res.json({ success: true });
+        })
+        .catch(e => next(e));
+
+    return true;
 }
 
 export default { get, create, list, remove };

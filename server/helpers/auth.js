@@ -10,8 +10,7 @@ function validateToken(req, res, next) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        next();
-        return false;
+        return next();
     }
 
     const token = req.headers.authorization.split(' ')[1]; // Bearer <token>
@@ -51,4 +50,12 @@ async function auth(req, res, next) {
     return next();
 }
 
-export default { validateToken, auth };
+function checkUser(req, res, next) {
+    if (!req.user) {
+        const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+        return next(err);
+    }
+    return true;
+}
+
+export default { validateToken, auth, checkUser };

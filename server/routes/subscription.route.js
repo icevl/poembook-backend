@@ -14,12 +14,12 @@ router
     .post([validateToken, auth], subscriptionCtrl.create);
 
 router
-    .route('/:subscriptionId')
+    .route('/:userId')
 
     /** GET /api/subscriptions/:subscriptionId - Get subscription */
     .get(subscriptionCtrl.get)
 
     /** DELETE /api/subscriptions/:subscriptionId - Delete subscription */
-    .delete(subscriptionCtrl.remove);
+    .delete([validateToken, auth], subscriptionCtrl.remove);
 
 export default router;
