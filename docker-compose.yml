@@ -27,6 +27,7 @@ services:
 
     # Overwrite any env var defined in .env file (if required)
     environment:
+      - REDIS_HOST=redis
       - UNIQUE_NAME_PG_HOST=postgres
       - WAIT_HOSTS=postgres:5432
 
@@ -46,3 +47,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=poem
+
+  redis:
+    image: "redis:alpine"
