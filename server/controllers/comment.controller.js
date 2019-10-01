@@ -10,14 +10,21 @@ const Poem = db.Poem;
  * Load comment and append to req.
  */
 function load(req, res, next, id) {
-    Comment.findById(id)
-        .then(poem => {
-            if (!poem) {
-                const e = new Error('Poem does not exist');
+    Comment.findOne({ where: { id } })
+        .then(async comment => {
+            if (!comment) {
+                const e = new Error('Comment does not exist');
                 e.status = httpStatus.NOT_FOUND;
                 return next(e);
             }
-            req.poem = poem; // eslint-disable-line no-param-reassign
+
+            const modelName = comment.commentable.charAt(0).toUpperCase() + comment.commentable.slice(1);
+            const response = await db[modelName].findOne({ id: comment.commentable_id });
+
+            req.comment = comment;
+            req.target = response;
+            req.model = modelName;
+
             return next();
         })
         .catch(e => next(e));
@@ -44,7 +51,6 @@ function create(req, res, next) {
     Comment.create(comment)
         .then(savedComment => {
             if (req.body.type === 'poem') {
-                // Poem.decrement('comments_count', { where: { id: req.body.id } });
                 Poem.increment('comments_count', { where: { id: req.body.id } });
             }
 
@@ -85,12 +91,23 @@ function list(req, res, next) {
  */
 function remove(req, res, next) {
     const comment = req.comment;
+    const target = req.target;
+
+    if (req.user.id !== comment.user_id && req.user.id !== target.user_id) {
+        const e = new Error('Restricted');
+        e.status = httpStatus.FORBIDDEN;
+        return next(e);
+    }
+
     comment
         .destroy()
-        .then(() => res.json({ success: true }))
+        .then(() => {
+            db[req.model].decrement('comments_count', { where: { id: comment.commentable_id } });
+            return res.json({ success: true });
+        })
         .catch(e => next(e));
 
-    next();
+    return true;
 }
 
 export default { load, get, create, update, list, remove };

@@ -23,7 +23,7 @@ router
     .put(commentCtrl.update)
 
     /** DELETE /api/comments/:commentId - Delete comment */
-    .delete(commentCtrl.remove);
+    .delete([validateToken, auth], commentCtrl.remove);
 
 /** Load comment when API with commentId route parameter is hit */
 router.param('commentId', commentCtrl.load);
