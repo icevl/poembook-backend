@@ -32,16 +32,23 @@ function get(req, res) {
 /**
  * Create new user
  */
-function create(req, res, next) {
+async function create(req, res, next) {
     const user = {
         email: req.body.email,
         password: req.body.password,
         name: req.body.name
     };
 
+    const response = await User.findOne({ where: { email: user.email } });
+    if (response) {
+        return res.json({ code: 300, error: 'User exists' });
+    }
+
     User.create(user)
         .then(savedUser => res.json(savedUser))
         .catch(e => next(e));
+
+    return true;
 }
 
 /**

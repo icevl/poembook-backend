@@ -12,7 +12,7 @@ const envVarsSchema = Joi.object({
     API_VERSION: Joi.string()
         .default('1.0')
         .description('API Version'),
-    REDIS_HOST: Joi.string().default("localhost"),
+    REDIS_HOST: Joi.string().default('localhost'),
     JWT_SECRET: Joi.string()
         .required()
         .description('JWT Secret required to sign'),
@@ -53,8 +53,8 @@ const config = {
     port: envVars.PORT,
     apiVersion: envVars.API_VERSION,
     jwtSecret: envVars.JWT_SECRET,
-    redis: { 
-	host: envVars.REDIS_HOST
+    redis: {
+        host: envVars.REDIS_HOST
     },
     postgres: {
         db: isTestEnvironment ? envVars.UNIQUE_NAME_PG_TEST_DB : envVars.UNIQUE_NAME_PG_DB,
