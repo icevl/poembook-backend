@@ -58,7 +58,7 @@ Object.keys(db).forEach(item => (typeof db[item].associate === 'function' ? db[i
 
 // Synchronizing any model changes with database.
 sequelize
-    .sync()
+    .sync({ alter: true })
     .then(() => {
         console.log('Database synchronized'); // eslint-disable-line no-console
     })
