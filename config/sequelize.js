@@ -8,7 +8,7 @@ import sequelizeCache from 'sequelize-transparent-cache';
 import config from './config';
 
 const db = {};
-const redis = new Redis();
+const redis = new Redis({ host: config.redis.host });
 const redisAdaptor = new RedisAdaptor({
     client: redis,
     namespace: 'model',
