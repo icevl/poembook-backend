@@ -1,11 +1,14 @@
+import Sequelize from 'sequelize';
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import attributes from '../helpers/attributes';
 import config from '../../config/config';
 import { findWithPaginate } from '../helpers/db';
+import { buildPoemArray } from '../helpers/poem';
 
 const Poem = db.Poem;
 const User = db.User;
+const Op = Sequelize.Op;
 
 /**
  * Load poem and append to req.
@@ -36,9 +39,19 @@ function get(req, res) {
  */
 function create(req, res, next) {
     const poem = {
+        title: req.body.title,
         content: req.body.content,
         user_id: req.user.id
     };
+    const poemArray = buildPoemArray(poem.content);
+
+    if (req.body.dedicate_to) {
+        poem.dedicate_to = req.body.dedicate_to;
+    }
+
+    if (!req.body.title || req.body.title.trim() === '') {
+        poem.title = poemArray[0];
+    }
 
     Poem.create(poem)
         .then(savedPoem => {
@@ -64,10 +77,12 @@ function update(req, res, next) {
 
 /**
  * Get poem list.
- *
  */
 function list(req, res, next) {
-    const { page = 1 } = req.query;
+    const { page = 1, user = 0 } = req.query;
+    const userId = user ? Number(user) : req.user.id;
+    const myId = req.user.id ? req.user.id : 0;
+
     const options = {
         attributes: attributes.poem,
         include: [
@@ -83,8 +98,10 @@ function list(req, res, next) {
         paginate: config.paginatorSize,
         page,
         order: [['id', 'DESC']],
-        where: { user_id: req.user.id }
+        where: { user_id: userId }
     };
+
+    Poem.increment('views_count', { where: { ...options.where, user_id: { [Op.not]: myId } } });
 
     findWithPaginate(Poem, options)
         .then(poems => res.json(poems))

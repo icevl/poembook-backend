@@ -19,11 +19,11 @@ function get(req, res) {
 async function create(req, res, next) {
     const subscription = {
         subscriber_id: req.user.id,
-        user_id: req.body.user_id
+        user_id: Number(req.body.user_id)
     };
 
-    const response = await Subscription.findOne(subscription);
-    if (response && response.id) {
+    const response = await Subscription.findOne({ where: subscription });
+    if (response) {
         const e = new Error('Subscription exists');
         e.status = httpStatus.NOT_FOUND;
         return next(e);

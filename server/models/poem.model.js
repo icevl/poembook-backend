@@ -16,9 +16,22 @@ module.exports = (sequelize, DataTypes) => {
                 field: 'user_id'
             },
 
+            title: {
+                type: DataTypes.STRING
+            },
+
             content: {
                 type: DataTypes.TEXT,
                 allowNull: false
+            },
+
+            dedicate_to: {
+                type: DataTypes.JSONB
+            },
+
+            access_level: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0
             },
 
             likes_count: {
@@ -27,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             comments_count: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0
+            },
+
+            views_count: {
                 type: DataTypes.INTEGER,
                 defaultValue: 0
             },

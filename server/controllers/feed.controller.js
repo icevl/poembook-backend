@@ -51,6 +51,8 @@ async function list(req, res, next) {
         }
     };
 
+    Poem.increment('views_count', { where: { ...options.where, user_id: { [Op.not]: userId } } });
+
     findWithPaginate(Poem, options)
         .then(poems => res.json(poems))
         .catch(e => next(e));
