@@ -1,10 +1,11 @@
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
-import { findWithPaginate } from '../helpers/db';
+import { findWithPaginate, getModel } from '../helpers/db';
 import attributes from '../helpers/attributes';
+import objects from '../helpers/objects';
+import { checkUser } from '../helpers/auth';
 
 const Comment = db.Comment;
-const Poem = db.Poem;
 
 /**
  * Load comment and append to req.
@@ -40,7 +41,9 @@ function get(req, res) {
 /**
  * Create new comment
  */
-function create(req, res, next) {
+async function create(req, res, next) {
+    checkUser(req, res, next);
+
     const comment = {
         content: req.body.content,
         commentable: req.body.type,
@@ -48,15 +51,29 @@ function create(req, res, next) {
         user_id: req.user.id
     };
 
+    const modelName = getModel(comment.commentable);
+    if (objects.can_comment.indexOf(modelName) === -1) {
+        const e = new Error('Not found');
+        e.status = httpStatus.NOT_FOUND;
+        return next(e);
+    }
+
+    const modelResponse = await db[modelName].findOne({ where: { id: comment.commentable_id } });
+    if (!modelResponse) {
+        const e = new Error('Not found');
+        e.status = httpStatus.NOT_FOUND;
+        return next(e);
+    }
+
     Comment.create(comment)
         .then(savedComment => {
-            if (req.body.type === 'poem') {
-                Poem.increment('comments_count', { where: { id: req.body.id } });
-            }
+            db[modelName].increment('comments_count', { where: { id: req.body.id } });
 
             res.json(savedComment);
         })
         .catch(e => next(e));
+
+    return true;
 }
 
 /**

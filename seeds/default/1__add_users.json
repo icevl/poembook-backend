@@ -4,6 +4,7 @@
         "method": "post",
         "body": {
             "name": "Mikhail Kabanov",
+            "login": "ice",
             "email": "kabanov.mike@gmail.com",
             "password": "$2y$12$.W7wN.KtB7umdEfXN0QU7eRQ77tBNlqOz//7E0GqaqdbDLvK8vPtm"
         }
@@ -13,6 +14,7 @@
         "method": "post",
         "body": {
             "name": "{{faker.name.lastName()}}",
+            "login": "Architect",
             "email": "icevl@mail.ru",
             "password": "$2y$12$.W7wN.KtB7umdEfXN0QU7eRQ77tBNlqOz//7E0GqaqdbDLvK8vPtm"
         }

@@ -1,0 +1,35 @@
+[
+    {
+        "url": "/api/likes",
+        "method": "post",
+        "body": {
+            "type": "poem",
+            "id": 24
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    },
+    {
+        "url": "/api/likes",
+        "method": "post",
+        "body": {
+            "type": "poem",
+            "id": 23
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    },
+    {
+        "url": "/api/likes",
+        "method": "post",
+        "body": {
+            "type": "poem",
+            "id": 22
+        },
+        "headers": {
+            "authorization": "Bearer {{token}}"
+        }
+    }
+]

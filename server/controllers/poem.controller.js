@@ -1,9 +1,7 @@
 import Sequelize from 'sequelize';
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
-import attributes from '../helpers/attributes';
-import config from '../../config/config';
-import { findWithPaginate } from '../helpers/db';
+import { findWithPaginate, poemsQuery } from '../helpers/db';
 import { buildPoemArray } from '../helpers/poem';
 
 const Poem = db.Poem;
@@ -83,23 +81,13 @@ function list(req, res, next) {
     const userId = user ? Number(user) : req.user.id;
     const myId = req.user.id ? req.user.id : 0;
 
-    const options = {
-        attributes: attributes.poem,
-        include: [
-            {
-                model: db.Comment,
-                as: 'comments',
-                limit: 3,
-                attributes: attributes.comment,
-                include: { model: db.User, as: 'user', attributes: attributes.user }
-            },
-            { model: db.User, as: 'user', attributes: attributes.user }
-        ],
-        paginate: config.paginatorSize,
-        page,
-        order: [['id', 'DESC']],
-        where: { user_id: userId }
-    };
+    const options = poemsQuery(page, {
+        user_id: userId,
+        friends: [],
+        where: {
+            user_id: userId
+        }
+    });
 
     Poem.increment('views_count', { where: { ...options.where, user_id: { [Op.not]: myId } } });
 

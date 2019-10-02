@@ -68,6 +68,13 @@ module.exports = (sequelize, DataTypes) => {
             as: 'comments',
             scope: { commentable: 'poem' }
         });
+
+        Poem.hasMany(models.Like, {
+            foreignKey: 'object_id',
+            as: 'likes',
+            scope: { object: 'poem' }
+        });
+
         Poem.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     };
 

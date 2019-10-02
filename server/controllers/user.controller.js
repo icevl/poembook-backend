@@ -34,14 +34,20 @@ function get(req, res) {
  */
 async function create(req, res, next) {
     const user = {
+        login: req.body.login,
         email: req.body.email,
         password: req.body.password,
         name: req.body.name
     };
 
-    const response = await User.findOne({ where: { email: user.email } });
-    if (response) {
-        return res.json({ code: 300, error: 'User exists' });
+    const responseEmail = await User.findOne({ where: { email: user.email } });
+    if (responseEmail) {
+        return res.json({ code: 300, error: 'Email exists' });
+    }
+
+    const responseLogin = await User.findOne({ where: { login: user.login } });
+    if (responseLogin) {
+        return res.json({ code: 301, error: 'Login exists' });
     }
 
     User.create(user)

@@ -39,7 +39,8 @@ async function auth(req, res, next) {
         if (respose && respose.id) {
             req.user = {
                 id: respose.id,
-                email: respose.email
+                email: respose.email,
+                login: respose.login
             };
             return next();
         }

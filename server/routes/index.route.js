@@ -4,6 +4,7 @@ import poemRoutes from './poem.route';
 import subscriptionRoutes from './subscription.route';
 import feedRoutes from './feed.route';
 import commentRoutes from './comment.route';
+import likeRoutes from './like.route';
 import authRoutes from './auth.route';
 import uploadRoutes from './upload.route';
 
@@ -29,6 +30,9 @@ router.use('/uploads', uploadRoutes);
 
 // mount poem routes at /comments
 router.use('/comments', commentRoutes);
+
+// mount like routes at /likes
+router.use('/likes', likeRoutes);
 
 // mount auth routes at /auth
 router.use('/auth', authRoutes);
