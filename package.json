@@ -82,6 +82,7 @@
         "lodash": "4.17.10",
         "method-override": "^2.3.5",
         "morgan": "1.7.0",
+        "node-fetch": "false2.6.0",
         "pg": "7.12.1",
         "pg-hstore": "2.3.3",
         "request": "2.88.0",

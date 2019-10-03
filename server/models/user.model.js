@@ -20,13 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         email: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         },
 
         password: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         },
 
         avatar: {
@@ -53,6 +51,15 @@ module.exports = (sequelize, DataTypes) => {
         subscribers_count: {
             type: DataTypes.INTEGER,
             defaultValue: 0
+        },
+
+        is_verified: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+
+        facebook_id: {
+            type: DataTypes.STRING
         },
 
         createdAt: {
