@@ -63,6 +63,14 @@ async function facebookLogin(req, res, next) {
     return true;
 }
 
+function auth(req, res) {
+    if (!req.user || !req.user.id) {
+        return res.status(404).json({ error: 'Invalid token' });
+    }
+
+    return res.json(req.user);
+}
+
 /**
  * This is a protected route. Will return random number only if jwt token is provided in header.
  * @param req
@@ -77,4 +85,4 @@ function getRandomNumber(req, res) {
     });
 }
 
-export default { login, getRandomNumber, facebookLogin };
+export default { login, getRandomNumber, facebookLogin, auth };

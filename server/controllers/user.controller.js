@@ -23,7 +23,6 @@ function load(req, res, next, id) {
 
 /**
  * Get user
- * @returns {User}
  */
 function get(req, res) {
     return res.json(req.user);
@@ -59,9 +58,6 @@ async function create(req, res, next) {
 
 /**
  * Update existing user
- * @property {string} req.body.username - The username of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
- * @returns {User}
  */
 function update(req, res, next) {
     const user = req.user;
