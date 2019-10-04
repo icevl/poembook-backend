@@ -10,7 +10,7 @@ function getModel(name) {
 }
 
 async function findWithPaginate(model, options, cacheTable = '') {
-    const page = options.page ? options.page : 1;
+    const page = options.page ? Number(options.page) : 1;
     const countingOptions = {};
     const findOptions = {
         ...options,
@@ -32,6 +32,7 @@ async function findWithPaginate(model, options, cacheTable = '') {
     }
 
     return {
+        page,
         total: total.count,
         pages: Math.floor((total.count + (config.paginatorSize - 1)) / config.paginatorSize),
         results: response
