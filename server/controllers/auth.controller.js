@@ -4,10 +4,12 @@ import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import APIError from '../helpers/APIError';
 import config from '../../config/config';
+import { getAccountUsers } from '../helpers/auth';
 
 const User = db.User;
+const Account = db.Account;
 
-function getUserData(user) {
+async function getUserData(user) {
     const token = jwt.sign(
         {
             id: user.id
@@ -15,11 +17,13 @@ function getUserData(user) {
         config.jwtSecret
     );
 
+    const accountUsers = await getAccountUsers(user.account_id);
+
     return {
         id: user.id,
-        email: user.email,
         name: user.name,
         login: user.login,
+        account_users: accountUsers,
         token
     };
 }
@@ -29,7 +33,7 @@ function getUserData(user) {
  */
 function login(req, res, next) {
     User.findOne({
-        where: { email: req.body.username, password: req.body.password }
+        where: { login: req.body.login, password: req.body.password }
     })
         .then(user => res.json(getUserData(user)))
         .catch(() => {
@@ -40,6 +44,8 @@ function login(req, res, next) {
 
 async function facebookLogin(req, res, next) {
     const token = req.body.token;
+    const userId = req.body.user_id ? Number(req.body.user_id) : 0;
+    let accountId;
 
     if (!token) {
         return next();
@@ -48,27 +54,61 @@ async function facebookLogin(req, res, next) {
     const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
     const data = await response.json();
 
-    if (data.id) {
-        const user = await User.findOne({ where: { facebook_id: data.id } });
-        if (user) {
-            res.json(getUserData(user));
-        } else {
-            const lastUser = await User.findOne({ limit: 1, order: [['id', 'DESC']] });
-            User.create({ facebook_id: data.id, name: data.name, login: `poet${lastUser.id + 1}` })
-                .then(savedUser => res.json(getUserData(savedUser)))
-                .catch(e => next(e));
-        }
+    // DEBUG
+    // const data = { id: '123' };
+
+    if (!data.id) {
+        return res.status(404).json({ error: 'Facebook rejected' });
     }
+
+    const account = await Account.findOne({ where: { facebook_id: data.id } });
+
+    if (!account) {
+        const accountNew = await Account.create({ facebook_id: data.id });
+        accountId = accountNew.id;
+    } else {
+        accountId = account.id;
+    }
+
+    const userOptions = {
+        account_id: accountId
+    };
+
+    if (userId) {
+        userOptions.id = userId;
+    }
+
+    const user = await User.findOne({ where: userOptions });
+
+    if (user) {
+        const userData = await getUserData(user);
+        return res.json(userData);
+    }
+
+    const lastUser = await User.findOne({ limit: 1, order: [['id', 'DESC']] });
+    let newUserId = 1;
+    if (lastUser && lastUser.id) {
+        newUserId = lastUser.id + 1;
+    }
+
+    User.create({ account_id: accountId, name: data.name, login: `poet${newUserId}` })
+        .then(savedUser => {
+            Account.increment('users_count', { where: { id: accountId } });
+            return res.json(getUserData(savedUser));
+        })
+        .catch(e => next(e));
 
     return true;
 }
 
-function auth(req, res) {
+async function auth(req, res) {
     if (!req.user || !req.user.id) {
         return res.status(404).json({ error: 'Invalid token' });
     }
 
-    return res.json(req.user);
+    const accountUsers = await getAccountUsers(req.user.account_id);
+    const user = { ...req.user, account_users: accountUsers };
+    return res.json(user);
 }
 
 /**

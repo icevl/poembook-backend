@@ -3,6 +3,7 @@ import db from '../../config/sequelize';
 import { findWithPaginate } from '../helpers/db';
 
 const User = db.User;
+const Account = db.Account;
 
 /**
  * Load user and append to req.
@@ -34,14 +35,13 @@ function get(req, res) {
 async function create(req, res, next) {
     const user = {
         login: req.body.login,
-        email: req.body.email,
+        name: req.body.name,
         password: req.body.password,
-        name: req.body.name
+        account_id: Number(req.body.account_id)
     };
 
-    const responseEmail = await User.findOne({ where: { email: user.email } });
-    if (responseEmail) {
-        return res.json({ code: 300, error: 'Email exists' });
+    if (!user.account_id) {
+        return res.json({ code: 300, error: 'No account set' });
     }
 
     const responseLogin = await User.findOne({ where: { login: user.login } });
@@ -50,7 +50,10 @@ async function create(req, res, next) {
     }
 
     User.create(user)
-        .then(savedUser => res.json(savedUser))
+        .then(savedUser => {
+            Account.increment('users_count', { where: { id: user.account_id } });
+            return res.json(savedUser);
+        })
         .catch(e => next(e));
 
     return true;

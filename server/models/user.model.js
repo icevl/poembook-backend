@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: false
         },
 
-        facebook_id: {
-            type: DataTypes.STRING
+        account_id: {
+            type: DataTypes.INTEGER
         },
 
         createdAt: {
@@ -79,6 +79,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'comments',
             onDelete: 'CASCADE'
         });
+        User.belongsTo(models.Account, { foreignKey: 'account_id', as: 'account' });
     };
 
     return User;

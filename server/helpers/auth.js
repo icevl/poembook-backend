@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import config from '../../config/config';
 import APIError from '../helpers/APIError';
+import attributes from '../helpers/attributes';
 
 const User = db.User;
 
@@ -39,8 +40,8 @@ async function auth(req, res, next) {
         if (respose && respose.id) {
             req.user = {
                 id: respose.id,
-                email: respose.email,
-                login: respose.login
+                login: respose.login,
+                account_id: respose.account_id
             };
             return next();
         }
@@ -59,4 +60,9 @@ function checkUser(req, res, next) {
     return true;
 }
 
-export default { validateToken, auth, checkUser };
+async function getAccountUsers(accountId) {
+    const users = await User.findAll({ where: { account_id: accountId }, attributes: attributes.user });
+    return users;
+}
+
+export default { validateToken, auth, checkUser, getAccountUsers };

@@ -4,8 +4,7 @@ export default {
     // POST /api/users
     createUser: {
         body: {
-            email: Joi.string().required(),
-            password: Joi.string().required()
+            account_id: Joi.number().required()
         }
     },
 
@@ -41,7 +40,7 @@ export default {
     // POST /api/auth/login
     login: {
         body: {
-            username: Joi.string().required(),
+            login: Joi.string().required(),
             password: Joi.string().required()
         }
     }

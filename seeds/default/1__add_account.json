@@ -1,0 +1,10 @@
+[
+    {
+        "url": "/api/accounts",
+        "method": "post",
+        "body": {},
+        "response": {
+            "account_id": "id"
+        }
+    }
+]
