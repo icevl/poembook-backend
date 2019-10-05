@@ -85,7 +85,8 @@ function list(req, res, next) {
         user_id: userId,
         friends: [],
         where: {
-            user_id: userId
+            user_id: userId,
+            is_active: true
         }
     });
 
@@ -109,7 +110,12 @@ function remove(req, res, next) {
         return next(e);
     }
 
-    poem.destroy()
+    if (!poem.is_active) {
+        return res.status(404).json({ error: 'Not found' });
+    }
+
+    poem.is_active = false;
+    poem.save()
         .then(() => {
             User.decrement('poems_count', { where: { id: poem.user_id } });
             return res.json({ id, success: true });

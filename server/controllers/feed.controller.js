@@ -31,7 +31,8 @@ async function list(req, res, next) {
         user_id: userId,
         friends: subscriptions,
         where: {
-            user_id: { [Op.in]: subscriptions }
+            user_id: { [Op.in]: subscriptions },
+            is_active: true
         }
     });
 
