@@ -41,6 +41,11 @@ function create(req, res, next) {
         content: req.body.content,
         user_id: req.user.id
     };
+
+    if (poem.content.length >= 20000) {
+        return res.status(301).json({ error: 'Max length 20k' });
+    }
+
     const poemArray = buildPoemArray(poem.content);
 
     if (req.body.dedicate_to) {
@@ -59,6 +64,8 @@ function create(req, res, next) {
             return res.json(savedPoem);
         })
         .catch(e => next(e));
+
+    return true;
 }
 
 /**

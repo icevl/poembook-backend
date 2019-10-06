@@ -9,7 +9,7 @@ function buildPoemArray(text) {
      */
     lines = lines
         .map((line, index) =>
-            index === 0 || line !== '' || (line === '' && this.lines[index - 1] !== '') ? line : null
+            index === 0 || line !== '' || (line === '' && lines[index - 1] !== '') ? line : null
         )
         .filter(el => el !== null);
 
