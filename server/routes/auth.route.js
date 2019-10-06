@@ -15,6 +15,7 @@ router.route('/').get([validateToken, auth], authCtrl.auth);
  */
 router.route('/login').post(validate(paramValidation.login), authCtrl.login);
 router.route('/fblogin').post(authCtrl.facebookLogin);
+router.route('/get').post([validateToken, auth], authCtrl.getUser);
 
 /** GET /api/auth/random-number - Protected route,
  * needs token returned by the above as header.

@@ -4,7 +4,7 @@ import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import APIError from '../helpers/APIError';
 import config from '../../config/config';
-import { getAccountUsers } from '../helpers/auth';
+import { getAccountUsers, checkUser } from '../helpers/auth';
 
 const User = db.User;
 const Account = db.Account;
@@ -35,7 +35,10 @@ function login(req, res, next) {
     User.findOne({
         where: { login: req.body.login, password: req.body.password }
     })
-        .then(user => res.json(getUserData(user)))
+        .then(async user => {
+            const data = await getUserData(user);
+            return res.json(data);
+        })
         .catch(() => {
             const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
             return next(err);
@@ -92,9 +95,10 @@ async function facebookLogin(req, res, next) {
     }
 
     User.create({ account_id: accountId, name: data.name, login: `poet${newUserId}` })
-        .then(savedUser => {
+        .then(async savedUser => {
             Account.increment('users_count', { where: { id: accountId } });
-            return res.json(getUserData(savedUser));
+            const userData = await getUserData(savedUser);
+            return res.json(userData);
         })
         .catch(e => next(e));
 
@@ -111,6 +115,20 @@ async function auth(req, res) {
     return res.json(user);
 }
 
+function getUser(req, res, next) {
+    checkUser(req, res, next);
+    const userId = Number(req.body.id);
+
+    User.findOne({
+        where: { id: userId, account_id: req.user.account_id }
+    })
+        .then(async user => {
+            const userData = await getUserData(user);
+            return res.json(userData);
+        })
+        .catch(() => res.json({ success: false }));
+}
+
 /**
  * This is a protected route. Will return random number only if jwt token is provided in header.
  * @param req
@@ -125,4 +143,4 @@ function getRandomNumber(req, res) {
     });
 }
 
-export default { login, getRandomNumber, facebookLogin, auth };
+export default { login, getRandomNumber, facebookLogin, auth, getUser };
