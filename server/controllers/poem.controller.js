@@ -81,7 +81,7 @@ function update(req, res, next) {
         return res.status(300).json({ error: 'Restricted' });
     }
 
-    poem.title = req.body.content;
+    poem.title = req.body.title;
     poem.content = req.body.content;
 
     poem.save()
