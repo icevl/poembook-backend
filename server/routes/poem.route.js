@@ -24,7 +24,7 @@ router
     .get(poemCtrl.get)
 
     /** PUT /api/poems/:poemId - Update poem */
-    .put(validate(paramValidation.updatePoem), poemCtrl.update)
+    .put([validateToken, auth], poemCtrl.update)
 
     /** DELETE /api/poems/:poemId - Delete poem */
     .delete([validateToken, auth], poemCtrl.remove);

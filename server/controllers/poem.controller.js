@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import { findWithPaginate, poemsQuery } from '../helpers/db';
 import { buildPoemArray } from '../helpers/poem';
+import { checkUser } from '../helpers/auth';
 
 const Poem = db.Poem;
 const User = db.User;
@@ -72,12 +73,22 @@ function create(req, res, next) {
  * Update existing poem
  */
 function update(req, res, next) {
+    checkUser(req, res, next);
+
     const poem = req.poem;
+
+    if (poem.user_id !== req.user.id) {
+        return res.status(300).json({ error: 'Restricted' });
+    }
+
+    poem.title = req.body.content;
     poem.content = req.body.content;
 
     poem.save()
         .then(savedPoem => res.json(savedPoem))
         .catch(e => next(e));
+
+    return true;
 }
 
 /**
