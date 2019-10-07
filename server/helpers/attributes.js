@@ -1,5 +1,5 @@
 export default {
-    user: ['id', 'name', 'avatar', 'avatar_meta', 'login'],
+    user: ['id', 'name', 'avatar', 'avatar_meta', 'login', 'is_verified'],
     comment: ['id', 'user_id', 'content', 'likes_count', 'created_at'],
     poem: [
         'id',
