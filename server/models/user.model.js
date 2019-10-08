@@ -31,10 +31,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
 
-        avatar_meta: {
+        avatar_url: {
             type: DataTypes.VIRTUAL,
-            get: function() {
-                return `http://suka.ru/${this.getDataValue('avatar')}`;
+            get: function () {
+                return this.getDataValue('avatar');
+                // return `http://suka.ru/${this.getDataValue('avatar')}`;
             }
         },
 
