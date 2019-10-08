@@ -92,9 +92,9 @@ function list(req, res, next) {
     const options = {
         attributes: attributes.comment,
         include: [{ model: db.User, as: 'user', attributes: attributes.user }],
-        paginate: 20,
+        paginate: 10,
         page,
-        order: [['id', 'DESC']],
+        order: [['id', 'ASC']],
         where: { commentable_id: id, commentable: type }
     };
 
