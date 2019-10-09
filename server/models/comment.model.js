@@ -10,14 +10,8 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true
             },
 
-            commentable: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-
-            commentable_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false
+            poem_id: {
+                type: DataTypes.INTEGER
             },
 
             user_id: {
@@ -50,8 +44,13 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     Comment.associate = models => {
+        Comment.hasMany(models.Like, {
+            foreignKey: 'comment_id',
+            as: 'likes'
+        });
+
         Comment.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-        Comment.belongsTo(models.Poem, { foreignKey: 'commentable_id', as: 'poem', onDelete: 'cascade' });
+        Comment.belongsTo(models.Poem, { foreignKey: 'poem_id', as: 'poem', onDelete: 'cascade' });
     };
 
     sequelizePaginate.paginate(Comment);

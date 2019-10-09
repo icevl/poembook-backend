@@ -8,14 +8,12 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true
             },
 
-            object: {
-                type: DataTypes.STRING,
-                allowNull: false
+            poem_id: {
+                type: DataTypes.INTEGER
             },
 
-            object_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false
+            comment_id: {
+                type: DataTypes.INTEGER
             },
 
             user_id: {
@@ -45,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Like.associate = models => {
         Like.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-        Like.belongsTo(models.Poem, { foreignKey: 'object_id', as: 'poem', onDelete: 'cascade' });
+        Like.belongsTo(models.Poem, { foreignKey: 'poem_id', as: 'poem', onDelete: 'cascade' });
+        Like.belongsTo(models.Comment, { foreignKey: 'comment_id', as: 'comment' });
     };
 
     return Like;

@@ -69,15 +69,13 @@ module.exports = (sequelize, DataTypes) => {
 
     Poem.associate = models => {
         Poem.hasMany(models.Comment, {
-            foreignKey: 'commentable_id',
-            as: 'comments',
-            scope: { commentable: 'poem' }
+            foreignKey: 'poem_id',
+            as: 'comments'
         });
 
         Poem.hasMany(models.Like, {
-            foreignKey: 'object_id',
-            as: 'likes',
-            scope: { object: 'poem' }
+            foreignKey: 'poem_id',
+            as: 'likes'
         });
 
         Poem.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });

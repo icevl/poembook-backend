@@ -20,14 +20,17 @@ function get(req, res) {
 async function create(req, res, next) {
     checkUser(req, res, next);
 
+    const id = Number(req.body.id);
+    const type = req.body.type;
+    const targetKey = `${type}_id`;
+
     const like = {
-        object: req.body.type,
-        object_id: req.body.id,
         user_id: req.user.id,
-        user_login: req.user.login
+        user_login: req.user.login,
+        [targetKey]: id
     };
 
-    const modelName = getModel(like.object);
+    const modelName = getModel(type);
     if (objects.can_like.indexOf(modelName) === -1) {
         const e = new Error('Not found');
         e.status = httpStatus.NOT_FOUND;
@@ -41,7 +44,7 @@ async function create(req, res, next) {
         return next(e);
     }
 
-    const modelResponse = await db[modelName].findOne({ where: { id: like.object_id } });
+    const modelResponse = await db[modelName].findOne({ where: { id: like[targetKey] } });
     if (!modelResponse) {
         const e = new Error('Not found');
         e.status = httpStatus.NOT_FOUND;
@@ -50,8 +53,8 @@ async function create(req, res, next) {
 
     Like.create(like)
         .then(savedLike => {
-            db[modelName].increment('likes_count', { where: { id: req.body.id } });
-            res.json(savedLike);
+            db[modelName].increment('likes_count', { where: { id: id } });
+            return res.json(savedLike);
         })
         .catch(e => next(e));
 
@@ -90,11 +93,13 @@ function list(req, res, next) {
  */
 async function remove(req, res, next) {
     checkUser(req, res, next);
-    const object = req.params.object;
-    const objectId = req.params.objectId;
 
-    const modelName = getModel(object);
-    const response = await Like.findOne({ where: { object: object, object_id: objectId, user_id: req.user.id } });
+    const id = Number(req.params.id);
+    const type = req.params.type;
+    const targetKey = `${type}_id`;
+
+    const modelName = getModel(type);
+    const response = await Like.findOne({ where: { [targetKey]: id, user_id: req.user.id } });
 
     if (!response) {
         return res.status(404).json({ error: 'No like found' });
@@ -107,7 +112,7 @@ async function remove(req, res, next) {
     })
         .then(() => {
             if (objects.can_like.indexOf(modelName) > -1) {
-                db[modelName].decrement('likes_count', { where: { id: objectId } });
+                db[modelName].decrement('likes_count', { where: { id: id } });
             }
 
             return res.json({ success: true });

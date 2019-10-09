@@ -13,6 +13,6 @@ router
     /** POST /api/likes - like something */
     .post([validateToken, auth], likeCtrl.create);
 
-router.route('/:object/:objectId').delete([validateToken, auth], likeCtrl.remove);
+router.route('/:type/:id').delete([validateToken, auth], likeCtrl.remove);
 
 export default router;
