@@ -7,6 +7,7 @@ import { checkUser } from '../helpers/auth';
 
 const Poem = db.Poem;
 const User = db.User;
+const DailyPoem = db.DailyPoem;
 const Op = Sequelize.Op;
 
 /**
@@ -57,11 +58,20 @@ function create(req, res, next) {
         poem.title = poemArray[0];
     }
 
+    if (req.body.daily_id) {
+        poem.daily_id = req.body.daily_id;
+    }
+
     Poem.create(poem)
         .then(savedPoem => {
             if (savedPoem.id) {
                 User.increment('poems_count', { where: { id: poem.user_id } });
             }
+
+            if (savedPoem.daily_id) {
+                DailyPoem.increment('count', { where: { id: savedPoem.daily_id } });
+            }
+
             return res.json(savedPoem);
         })
         .catch(e => next(e));
@@ -136,6 +146,11 @@ function remove(req, res, next) {
     poem.save()
         .then(() => {
             User.decrement('poems_count', { where: { id: poem.user_id } });
+
+            if (poem.daily_id) {
+                DailyPoem.decrement('count', { where: { id: poem.daily_id } });
+            }
+
             return res.json({ id, success: true });
         })
         .catch(e => next(e));

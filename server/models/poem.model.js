@@ -49,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: 0
             },
 
+            daily_id: {
+                type: DataTypes.INTEGER
+            },
+
             is_active: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true
