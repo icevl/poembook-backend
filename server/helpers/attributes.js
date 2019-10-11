@@ -11,5 +11,6 @@ export default {
         'views_count',
         'created_at',
         'user_id'
-    ]
+    ],
+    lang: ['en', 'ru', 'cn']
 };

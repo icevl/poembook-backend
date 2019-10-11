@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
 
         avatar_url: {
             type: DataTypes.VIRTUAL,
-            get: function () {
+            get: function() {
                 return this.getDataValue('avatar');
                 // return `http://suka.ru/${this.getDataValue('avatar')}`;
             }
@@ -61,6 +61,11 @@ module.exports = (sequelize, DataTypes) => {
 
         account_id: {
             type: DataTypes.INTEGER
+        },
+
+        lang: {
+            type: DataTypes.STRING,
+            defaultValue: 'ru'
         },
 
         createdAt: {
