@@ -63,11 +63,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER
         },
 
-        lang: {
-            type: DataTypes.STRING,
-            defaultValue: 'ru'
-        },
-
         createdAt: {
             type: DataTypes.DATE,
             field: 'created_at'

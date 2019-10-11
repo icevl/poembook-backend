@@ -2,7 +2,7 @@ import express from 'express';
 import validate from 'express-validation';
 import paramValidation from '../../config/param-validation';
 import userCtrl from '../controllers/user.controller';
-import { validateToken, auth } from '../helpers/auth';
+// import { validateToken, auth } from '../helpers/auth';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -15,7 +15,7 @@ router
     /** POST /api/users - Create new user */
     .post(validate(paramValidation.createUser), userCtrl.create);
 
-router.route('/setlang').put([validateToken, auth], userCtrl.setLang);
+// router.route('/setlang').put([validateToken, auth], userCtrl.setLang);
 
 router
     .route('/:userId')

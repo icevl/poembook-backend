@@ -8,6 +8,7 @@ import likeRoutes from './like.route';
 import authRoutes from './auth.route';
 import uploadRoutes from './upload.route';
 import accountRoutes from './account.route';
+import dailyPoemRoutes from './dailypoem.route';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -40,5 +41,8 @@ router.use('/likes', likeRoutes);
 
 // mount auth routes at /auth
 router.use('/auth', authRoutes);
+
+// mount dailypoem
+router.use('/dailypoems', dailyPoemRoutes);
 
 export default router;

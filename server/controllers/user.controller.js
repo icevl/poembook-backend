@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import { findWithPaginate } from '../helpers/db';
-import attributes from '../helpers/attributes';
-import { checkUser } from '../helpers/auth';
+// import attributes from '../helpers/attributes';
+// import { checkUser } from '../helpers/auth';
 
 const User = db.User;
 const Account = db.Account;
@@ -104,23 +104,23 @@ function remove(req, res, next) {
         .catch(e => next(e));
 }
 
-async function setLang(req, res, next) {
-    checkUser(req, res, next);
+// async function setLang(req, res, next) {
+//     checkUser(req, res, next);
 
-    const lang = req.body.lang;
+//     const lang = req.body.lang;
 
-    if (attributes.lang.indexOf(lang) === -1) {
-        return res.status(400).send({ message: 'Wrong request' });
-    }
+//     if (attributes.lang.indexOf(lang) === -1) {
+//         return res.status(400).send({ message: 'Wrong request' });
+//     }
 
-    const user = await User.findOne({ where: { id: req.user.id } });
-    if (!user) {
-        return res.status(400).send({ message: 'Wrong request' });
-    }
+//     const user = await User.findOne({ where: { id: req.user.id } });
+//     if (!user) {
+//         return res.status(400).send({ message: 'Wrong request' });
+//     }
 
-    await user.update({ lang });
-    res.json({ success: true });
-    return true;
-}
+//     await user.update({ lang });
+//     res.json({ success: true });
+//     return true;
+// }
 
-export default { load, get, create, update, list, remove, setLang };
+export default { load, get, create, update, list, remove };
