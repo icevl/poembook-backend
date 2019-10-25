@@ -22,11 +22,14 @@ async function create(req, res, next) {
         user_id: Number(req.body.user_id)
     };
 
+    const user = await User.findOne({ where: { id: subscription.user_id } });
+    if (!user) {
+        return res.status(404).json({ error: `User ${subscription.user_id} not found` });
+    }
+
     const response = await Subscription.findOne({ where: subscription });
     if (response) {
-        const e = new Error('Subscription exists');
-        e.status = httpStatus.NOT_FOUND;
-        return next(e);
+        return res.status(404).json({ error: 'Subscription exists' });
     }
 
     Subscription.create(subscription)
