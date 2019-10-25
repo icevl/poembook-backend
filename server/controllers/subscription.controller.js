@@ -1,4 +1,3 @@
-import httpStatus from 'http-status';
 import db from '../../config/sequelize';
 import { findWithPaginate } from '../helpers/db';
 import { checkUser } from '../helpers/auth';
